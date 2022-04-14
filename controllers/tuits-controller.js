@@ -7,7 +7,6 @@ const findAllTuits = async (req, res) => {
 
 const createTuit = async (req, res) => {
     const newTuit = req.body;
-    const insertedTuit = await tuitsDao.createTuit(newTuit);
     newTuit.likes = 0;
     newTuit.dislikes = 0;
     newTuit.comments = 0;
@@ -19,20 +18,21 @@ const createTuit = async (req, res) => {
     newTuit.username = "Web Dev";
     newTuit.time = "Just now";
     newTuit["avatar-image"] = "../media/profileimage.jpg";
+    const insertedTuit = await tuitsDao.createTuit(newTuit);
     res.json(insertedTuit);
 }
 
 const deleteTuit = async (req, res) => {
     const tuitdIdToDelete = req.params.tid;
     const status = await tuitsDao.deleteTuit(tuitdIdToDelete);
-    res.sendStatus(status);
+    res.send(status);
 }
 
 const updateTuit = async (req, res) => {
     const tuitdIdToUpdate = req.params.tid;
     const updatedTuit = req.body;
     const status = await tuitsDao.updateTuit(tuitdIdToUpdate, updatedTuit);
-    res.sendStatus(status);
+    res.send(status);
 }
 
 export default (app) => {
