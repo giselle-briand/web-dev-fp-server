@@ -1,55 +1,33 @@
-import people from './users/users.js';
-let users = people;
+import * as usersDao from "../users/users-dao.js";
 
-const userController = (app) => {
-    app.get('/api/users', findAllUsers);
-    app.get('/api/users/:uid', findUserById);
+const findUser = async (req, res) => {
+    const userId = req.params.uid;
+    const user = await usersDao.findUser(userId);
+    res.json(user);
+}
+
+const createUser = async (req, res) => {
+    const newUser = req.body;
+    const insertedUser = await usersDao.createUser(newUser);
+    res.json(insertedUser);
+}
+
+const deleteUser = async (req, res) => {
+    const userId = req.params.uid;
+    const status = await usersDao.deleteUser(userId);
+    res.send(status);
+}
+
+const updateUser = async (req, res) => {
+    const userId = req.params.uid;
+    const updatedUser = req.body;
+    const status = await usersDao.updateUser(userId, updatedUser);
+    res.send(status);
+}
+
+export default (app) => {
+    app.get('/api/users/:uid', findUser);
     app.post('/api/users', createUser);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
 }
-
-const updateUser = (req, res) => {
-    const userId = req.params['uid'];
-    const updatedUser = req.body;
-    users = users.map(usr =>
-        usr._id === userId ?
-            updatedUser :
-            usr);
-    res.sendStatus(200);
-}
-
-const deleteUser = (req, res) => {
-    const userId = req.params['uid'];
-    users = users.filter(usr =>
-        usr._id !== userId);
-    res.sendStatus(200);
-}
-
-const createUser = (req, res) => {
-    const newUser = req.body;
-    newUser._id = (new Date()).getTime() + '';
-    users.push(newUser);
-    res.json(newUser);
-}
-
-const findUserById = (req, res) => {
-    const userId = req.params.uid;
-    const user = users.find(u => u._id === userId);
-    res.json(user);
-}
-
-const findAllUsers = (req, res) => {
-    const type = req.query.type; // or could have used `req.query['type']`
-    if (type) {
-        res.json(findUsersByType(type));
-        return;
-    }
-    res.json(users);
-}
-
-const findUsersByType = (type) => {
-    return users.filter(object => object.type === type);
-}
-
-export default userController;
