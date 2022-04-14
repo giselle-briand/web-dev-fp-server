@@ -1,17 +1,20 @@
 import mongoose from 'mongoose';
 import TuitsSchema from "../tuits/tuits-schema.js";
-const schema = mongoose.Schema({
+const usersSchema = mongoose.Schema({
     name: String,
-    handle: String,
-    "avatar-image": String,
-    header: String,
+    username: String,
+    password: {type: String, required: true},
+    "avatar-image": {type: String, default: "../media/emptypp.webp"},
+    header: {type: String, default: "../media/emptyheader.webp"},
     bio: String,
-    followers: Number,
-    following: Number,
+    followerCount: {type: Number, default: 0},
+    followingCount: {type: Number, default: 0},
+    followers: [usersSchema],
+    following: [usersSchema],
     loggedIn: Boolean,
     tuits: [TuitsSchema],
     likes: [TuitsSchema],
-    email: String,
+    email: {type: String, required: true},
     phoneNumber: String
 }, {collection: 'users'});
-export default schema;
+export default usersSchema;
