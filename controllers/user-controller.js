@@ -29,11 +29,11 @@ const signup = async (req, res) => {
     }
 }
 
-// const createUser = async (req, res) => {
-//     const newUser = req.body;
-//     const insertedUser = await usersDao.createUser(newUser);
-//     res.json(insertedUser);
-// }
+const createUser = async (req, res) => {
+    const newUser = req.body;
+    const insertedUser = await usersDao.createUser(newUser);
+    res.json(insertedUser);
+ }
 
 const deleteUser = async (req, res) => {
     const userId = req.params.uid;

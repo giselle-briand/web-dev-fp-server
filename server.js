@@ -9,6 +9,7 @@ import tweetsController from "./controllers/tweets-controller.js";
 const CONNECTION_STRING = process.env.DB_PROJECT_CONNECTION_STRING
     || 'mongodb+srv://webdevfinalproject:webdevfinalpassword@cluster0.nrm2x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 mongoose.connect(CONNECTION_STRING);
+console.log(CONNECTION_STRING)
 
 const app = express();
 app.use(cors());
