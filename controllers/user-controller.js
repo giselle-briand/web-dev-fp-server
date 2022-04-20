@@ -51,7 +51,7 @@ const updateUser = async (req, res) => {
 export default (app) => {
     app.get('/api/users/:uid', findUser);
     app.post('/api/users/credentials', findUserByCredentials)
-    app.post('/api/users', createUser);
+    app.post('/api/users', signup);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
 }
