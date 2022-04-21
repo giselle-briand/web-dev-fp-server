@@ -18,22 +18,23 @@ const findUserByCredentials = async (req, res) => {
     }
 }
 
+const createUser = async (req, res) => {
+    const newUser = req.body;
+    const insertedUser = await usersDao.createUser(newUser);
+    res.json(insertedUser);
+}
+
 const signup = async (req, res) => {
     const user = req.body
     const existingUser = await usersDao.findUserByEmail(user.email)
     if (existingUser) {
+        console.log("oh no!")
         res.sendStatus(403)
     } else {
         const actualUser = await usersDao.createUser(user)
         res.json(actualUser)
     }
 }
-
-const createUser = async (req, res) => {
-    const newUser = req.body;
-    const insertedUser = await usersDao.createUser(newUser);
-    res.json(insertedUser);
- }
 
 const deleteUser = async (req, res) => {
     const userId = req.params.uid;
@@ -48,10 +49,39 @@ const updateUser = async (req, res) => {
     res.send(status);
 }
 
+const profile = (req, res) => {
+    const currentUser = req.session['currentUser']
+    if(currentUser) {
+        res.json(currentUser)
+    } else {
+        res.sendStatus(503)
+    }
+}
+
+const login = async (req, res) => {
+    const existingUser = await usersDao
+        .findUserByCredentials(req.body.email, req.body.password)
+    if(existingUser) {
+        req.session['currentUser'] = existingUser
+        return res.send(existingUser)
+    } else {
+        return res.sendStatus(503)
+    }
+}
+
+const logout = (req, res) => {
+    req.session.destroy()
+    res.sendStatus(200)
+}
+
 export default (app) => {
+    app.post('/api/signup', signup)
+    app.post('/api/login', login)
+    app.post('/api/logout', logout)
+
+    app.post('/api/profile', profile)
     app.get('/api/users/:uid', findUser);
     app.post('/api/users/credentials', findUserByCredentials)
-    app.post('/api/users', signup);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
 }
