@@ -7,10 +7,16 @@ const schema = mongoose.Schema({
     retuits: Number,
     liked: Boolean,
     disliked: Boolean,
+    name: String,
     username: String,
-    handle: String,
     verified: Boolean,
     time: String,
+    date: {
+        day: String,
+        month: String,
+        year: String,
+        time: String
+    },
     title: String,
     topic: String,
     video: String,
