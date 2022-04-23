@@ -1,4 +1,5 @@
 import * as usersDao from "../users/users-dao.js";
+import * as tuitsDao from "../tuits/tuits-dao.js";
 
 const findUser = async (req, res) => {
     const userId = req.params.uid;
@@ -74,6 +75,18 @@ const logout = (req, res) => {
     res.sendStatus(200)
 }
 
+const findLikedTuits = async (req, res) => {
+    const userId = req.params.uid;
+    const user = await usersDao.findUser(userId);
+    const liked_tuits = user.liked_tuits;
+    const tuits = [];
+    for (let i = 0; i < liked_tuits.length; i++) {
+        const newTuit = await tuitsDao.findTuit(liked_tuits[i]);
+        tuits.push(newTuit);
+    }
+    res.json(tuits);
+}
+
 export default (app) => {
     app.post('/api/signup', signup)
     app.post('/api/login', login)
@@ -81,7 +94,8 @@ export default (app) => {
 
     app.post('/api/profile', profile)
     app.get('/api/users/:uid', findUser);
-    app.post('/api/users/credentials', findUserByCredentials)
+    app.get('/api/users/:uid/likes/tuits', findLikedTuits);
+    app.post('/api/users/credentials', findUserByCredentials);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
 }
