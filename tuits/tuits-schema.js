@@ -5,8 +5,11 @@ const schema = mongoose.Schema({
     dislikes: Number,
     comments: Number,
     retuits: Number,
-    liked: Boolean,
-    disliked: Boolean,
+    //liked: Boolean,
+    liked_users:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserModel'}],
+    //disliked: Boolean,
     "api-post-id": String,
     name: String,
     username: String,
