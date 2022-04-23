@@ -1,4 +1,6 @@
 import * as tuitsDao from "../tuits/tuits-dao.js";
+import * as usersDao from "../users/users-dao.js";
+import mongoose from "mongoose";
 
 const findAllTuits = async (req, res) => {
     const tuits = await tuitsDao.findAllTuits();
@@ -7,18 +9,28 @@ const findAllTuits = async (req, res) => {
 
 const createTuit = async (req, res) => {
     const newTuit = req.body;
+    const userId = req.params.userId;
+    const user = await usersDao.findUser(userId);
+    const date = new Date();
+    console.log(user.username)
+    newTuit.username = user.username;
+    newTuit.name = user.name;
     newTuit.likes = 0;
-    newTuit.dislikes = 0;
+    newTuit.disliked = 0;
     newTuit.comments = 0;
-    newTuit.retuits = 0;
     newTuit.liked = false;
     newTuit.disliked = false;
     newTuit.verified = false;
-    newTuit.handle = "webdev";
-    newTuit.username = "Web Dev";
     newTuit.time = "Just now";
-    newTuit["avatar-image"] = "../media/profileimage.jpg";
-    const insertedTuit = await tuitsDao.createTuit(newTuit);
+    newTuit["avatar-image"] =  user["avatar-image"];
+    newTuit.retuits = 0;
+    newTuit["api-post-id"] = "";
+    newTuit.date = {};
+    newTuit.date.day = date.getDate();
+    newTuit.date.month = date.getUTCMonth() + 1;
+    newTuit.date.year = date.getUTCFullYear();
+    newTuit.date.time = date.toISOString().split('T')[1].substring(0,5);
+    const insertedTuit = await tuitsDao.createTuit(userId, newTuit);
     res.json(insertedTuit);
 }
 
@@ -35,9 +47,16 @@ const updateTuit = async (req, res) => {
     res.send(status);
 }
 
+const findCommentsByUserId = async (req, res) => {
+    const userId = req.params.userId
+    const comments = await tuitsDao.findTuitsByUserId(userId)
+    res.json(comments)
+}
+
 export default (app) => {
-    app.post('/api/tuits', createTuit);
+    app.post('/api/tuits/users/:userId', createTuit);
     app.get('/api/tuits', findAllTuits);
+    app.get('/api/users/:userId/tuits', findCommentsByUserId);
     app.put('/api/tuits/:tid', updateTuit);
     app.delete('/api/tuits/:tid', deleteTuit);
 }
