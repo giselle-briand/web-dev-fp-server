@@ -7,10 +7,12 @@ const schema = mongoose.Schema({
     retuits: Number,
     liked: Boolean,
     disliked: Boolean,
+    "api-post-id": String,
     name: String,
     username: String,
-    verified: Boolean,
-    time: String,
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserModel'},
     date: {
         day: String,
         month: String,

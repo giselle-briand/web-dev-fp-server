@@ -11,10 +11,11 @@ const usersSchema = mongoose.Schema({
     followingCount: {type: Number, default: 0},
     followers: [{type: String, ref: 'UserModel'}],
     following: [{type: String, ref: 'UserModel'}],
-    loggedIn: Boolean,
-    tuits: [TuitsSchema],
-    likes: [TuitsSchema],
-    comments: [TuitsSchema],
+    //loggedIn: Boolean,
+    //tuits: [TuitsSchema],
+    //likes: [TuitsSchema],
+    //comments: [TuitsSchema],
+    verified: Boolean,
     email: {type: String, required: true},
     phoneNumber: {type: String, require:true}
 }, {collection: 'users'});
