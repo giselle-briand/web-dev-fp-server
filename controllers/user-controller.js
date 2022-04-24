@@ -13,7 +13,7 @@ const findUserByCredentials = async (req, res) => {
     const password = crendentials.password
     const user = await usersDao.findUserByCredentials(email, password)
     if(user) {
-        res.send(200)
+        res.send(user)
     } else {
         res.send(403)
     }
@@ -91,7 +91,6 @@ export default (app) => {
     app.post('/api/signup', signup)
     app.post('/api/login', login)
     app.post('/api/logout', logout)
-
     app.post('/api/profile', profile)
     app.get('/api/users/:uid', findUser);
     app.get('/api/users/:uid/likes/tuits', findLikedTuits);
