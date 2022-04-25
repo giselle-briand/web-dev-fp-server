@@ -87,6 +87,30 @@ const findLikedTuits = async (req, res) => {
     res.json(tuits);
 }
 
+const findFollowers = async (req, res) => {
+    const userId = req.params.uid;
+    const user = await usersDao.findUser(userId);
+    const followers = user.followers;
+    const fs = [];
+    for (let i = 0; i < followers.length; i++) {
+        const newUser = await usersDao.findUser(followers[i]);
+        fs.push(newUser);
+    }
+    res.json(fs);
+}
+
+const findFollowing = async (req, res) => {
+    const userId = req.params.uid;
+    const user = await usersDao.findUser(userId);
+    const following = user.following;
+    const fs = [];
+    for (let i = 0; i < following.length; i++) {
+        const newUser = await usersDao.findUser(following[i]);
+        fs.push(newUser);
+    }
+    res.json(fs);
+}
+
 export default (app) => {
     app.post('/api/signup', signup)
     app.post('/api/login', login)
@@ -94,6 +118,9 @@ export default (app) => {
     app.post('/api/profile', profile)
     app.get('/api/users/:uid', findUser);
     app.get('/api/users/:uid/likes/tuits', findLikedTuits);
+    app.get('/api/users/:uid/followers', findFollowers);
+    app.get('/api/users/:uid/following', findFollowing);
+
     app.post('/api/users/credentials', findUserByCredentials);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
