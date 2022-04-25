@@ -16,12 +16,9 @@ const usersSchema = mongoose.Schema({
         ref: 'TuitModel'}],
     verified: {type: Boolean, default: false},
     email: {type: String, required: true},
-    phoneNumber: {type: String, require:true}
+    phoneNumber: {type: String, require:true},
+    admin: {type: Boolean, required: true}
 }, {collection: 'users'});
 export default usersSchema;
 
 
-//loggedIn: Boolean,
-//tuits: [TuitsSchema],
-//likes: [TuitsSchema],
-//comments: [TuitsSchema],
