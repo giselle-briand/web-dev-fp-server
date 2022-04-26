@@ -14,6 +14,9 @@ const usersSchema = mongoose.Schema({
     liked_tuits:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'TuitModel'}],
+    bookmarks:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'TuitModel'}],
     verified: {type: Boolean, default: false},
     email: {type: String, required: true},
     phoneNumber: {type: String, require:true},
