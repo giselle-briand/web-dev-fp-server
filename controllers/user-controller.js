@@ -86,7 +86,7 @@ const findLikedTuits = async (req, res) => {
     const tuits = [];
     for (let i = 0; i < liked_tuits.length; i++) {
         const newTuit = await tuitsDao.findTuit(liked_tuits[i]);
-        tuits.push(newTuit);x
+        tuits.push(newTuit);
     }
     res.json(tuits);
 }
