@@ -82,6 +82,18 @@ const findLikedTuits = async (req, res) => {
     const tuits = [];
     for (let i = 0; i < liked_tuits.length; i++) {
         const newTuit = await tuitsDao.findTuit(liked_tuits[i]);
+        tuits.push(newTuit);x
+    }
+    res.json(tuits);
+}
+
+const findBookmarks = async (req, res) => {
+    const userId = req.params.uid;
+    const user = await usersDao.findUser(userId);
+    const bookmarks = user.bookmarks;
+    const tuits = [];
+    for (let i = 0; i < bookmarks.length; i++) {
+        const newTuit = await tuitsDao.findTuit(tuits[i]);
         tuits.push(newTuit);
     }
     res.json(tuits);
@@ -117,10 +129,10 @@ export default (app) => {
     app.post('/api/logout', logout)
     app.post('/api/profile', profile)
     app.get('/api/users/:uid', findUser);
-    app.get('/api/users/:uid/likes/tuits', findLikedTuits);
+    app.get('/api/users/:uid/likes', findLikedTuits);
+    app.get('/api/users/:uid/bookmarks', findBookmarks);
     app.get('/api/users/:uid/followers', findFollowers);
     app.get('/api/users/:uid/following', findFollowing);
-
     app.post('/api/users/credentials', findUserByCredentials);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
