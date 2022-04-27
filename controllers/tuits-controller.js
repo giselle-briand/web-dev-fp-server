@@ -13,23 +13,26 @@ const createTuit = async (req, res) => {
     const user = await usersDao.findUser(userId);
     const date = new Date();
     console.log(user.username)
-    newTuit.username = user.username;
-    newTuit.name = user.name;
-    newTuit.likes = 0;
-    newTuit.disliked = 0;
-    newTuit.comments = 0;
-    newTuit.liked = false;
-    newTuit.disliked = false;
-    newTuit.verified = false;
-    newTuit.time = "Just now";
-    newTuit["avatar-image"] =  user["avatar-image"];
-    newTuit.retuits = 0;
-    newTuit["api-post-id"] = "";
-    newTuit.date = {};
-    newTuit.date.day = date.getDate();
-    newTuit.date.month = date.getUTCMonth() + 1;
-    newTuit.date.year = date.getUTCFullYear();
-    newTuit.date.time = date.toISOString().split('T')[1].substring(0,5);
+
+    if (newTuit["api-post-id"] === undefined) {
+        newTuit.username = user.username;
+        newTuit.name = user.name;
+        newTuit.likes = 0;
+        newTuit.disliked = 0;
+        newTuit.comments = 0;
+        newTuit.liked = false;
+        newTuit.disliked = false;
+        newTuit.verified = false;
+        newTuit.time = "Just now";
+        newTuit["avatar-image"] = user["avatar-image"];
+        newTuit.retuits = 0;
+        newTuit["api-post-id"] = "";
+        newTuit.date = {};
+        newTuit.date.day = date.getDate();
+        newTuit.date.month = date.getUTCMonth() + 1;
+        newTuit.date.year = date.getUTCFullYear();
+        newTuit.date.time = date.toISOString().split('T')[1].substring(0, 5);
+    }
     const insertedTuit = await tuitsDao.createTuit(userId, newTuit);
     res.json(insertedTuit);
 }

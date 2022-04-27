@@ -124,7 +124,6 @@ export default (app) => {
     app.get('/api/users/:uid/likes/tuits', findLikedTuits);
     app.get('/api/users/:uid/followers', findFollowers);
     app.get('/api/users/:uid/following', findFollowing);
-
     app.post('/api/users/credentials', findUserByCredentials);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
