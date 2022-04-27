@@ -47,13 +47,16 @@ const updateUser = async (req, res) => {
     const userId = req.params.uid;
     const updatedUser = req.body;
     const status = await usersDao.updateUser(userId, updatedUser);
+    req.session['currentUser'] = updatedUser;
     res.send(status);
 }
 
 const profile = (req, res) => {
     const currentUser = req.session['currentUser']
-    if(currentUser) {
-        res.json(currentUser)
+    //const existingUser = await usersDao.findUserByCredentials(req.body.email, req.body.password)
+    if(currentUser ) {
+        //req.session['currentUser'] = currentUser
+        res.json(currentUser )
     } else {
         res.sendStatus(503)
     }
@@ -79,6 +82,7 @@ const findLikedTuits = async (req, res) => {
     const userId = req.params.uid;
     const user = await usersDao.findUser(userId);
     const liked_tuits = user.liked_tuits;
+    console.log(user)
     const tuits = [];
     for (let i = 0; i < liked_tuits.length; i++) {
         const newTuit = await tuitsDao.findTuit(liked_tuits[i]);
