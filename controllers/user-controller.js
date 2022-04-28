@@ -51,6 +51,13 @@ const updateUser = async (req, res) => {
     res.send(status);
 }
 
+const updateOtherUser = async (req, res) => {
+    const userId = req.params.uid;
+    const updatedUser = req.body;
+    const status = await usersDao.updateUser(userId, updatedUser);
+    res.send(status)
+}
+
 const profile = (req, res) => {
     const currentUser = req.session['currentUser']
     //const existingUser = await usersDao.findUserByCredentials(req.body.email, req.body.password)
@@ -90,20 +97,6 @@ const findLikedTuits = async (req, res) => {
     }
     res.json(tuits);
 }
-
-/*
-const findBookmarks = async (req, res) => {
-    const userId = req.params.uid;
-    const user = await usersDao.findUser(userId);
-    const bookmarks = user.bookmarks;
-    const tuits = [];
-    for (let i = 0; i < bookmarks.length; i++) {
-        const newTuit = await tuitsDao.findTuit(tuits[i]);
-        tuits.push(newTuit);
-    }
-    res.json(tuits);
-}
-*/
 
 const findBookmarks = async (req, res) => {
     const userId = req.params.uid;
@@ -154,4 +147,5 @@ export default (app) => {
     app.post('/api/users/credentials', findUserByCredentials);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
+    app.put('/api/users/other/:uid', updateOtherUser);
 }
