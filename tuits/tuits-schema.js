@@ -5,14 +5,16 @@ const schema = mongoose.Schema({
     dislikes: Number,
     comments: Number,
     retuits: Number,
-    //liked: Boolean,
     liked_users:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'}],
     bookmarked_users:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'}],
-    //disliked: Boolean,
+    commented_users:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserModel'
+    }],
     "api-post-id": String,
     name: String,
     username: String,
