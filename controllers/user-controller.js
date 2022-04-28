@@ -46,9 +46,16 @@ const deleteUser = async (req, res) => {
 const updateUser = async (req, res) => {
     const userId = req.params.uid;
     const updatedUser = req.body;
-    const status = await usersDao.updateUser(userId, updatedUser);
-    req.session['currentUser'] = updatedUser;
-    res.send(status);
+
+    const existingUser = await usersDao.findUserByEmail(updatedUser.email)
+    if (existingUser.id.toString() !== updatedUser._id) {
+        res.sendStatus(403)
+    } else {
+        const status = await usersDao.updateUser(userId, updatedUser);
+        req.session['currentUser'] = updatedUser;
+        res.send(status);
+    }
+
 }
 
 const updateOtherUser = async (req, res) => {
