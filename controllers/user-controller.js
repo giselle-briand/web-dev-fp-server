@@ -91,6 +91,7 @@ const findLikedTuits = async (req, res) => {
     res.json(tuits);
 }
 
+/*
 const findBookmarks = async (req, res) => {
     const userId = req.params.uid;
     const user = await usersDao.findUser(userId);
@@ -102,17 +103,18 @@ const findBookmarks = async (req, res) => {
     }
     res.json(tuits);
 }
+*/
 
 const findBookmarks = async (req, res) => {
     const userId = req.params.uid;
     const user = await usersDao.findUser(userId);
     const bookmarks = user.bookmarks;
-    const tuits = [];
+    const all = [];
     for (let i = 0; i < bookmarks.length; i++) {
-        const newTuit = await tuitsDao.findTuit(tuits[i]);
-        tuits.push(newTuit);
+        const newTuit = await tuitsDao.findTuit(bookmarks[i]);
+        all.push(newTuit);
     }
-    res.json(tuits);
+    res.json(all);
 }
 
 const findFollowers = async (req, res) => {
