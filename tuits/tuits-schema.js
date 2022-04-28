@@ -9,6 +9,9 @@ const schema = mongoose.Schema({
     liked_users:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'}],
+    bookmarked_users:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserModel'}],
     //disliked: Boolean,
     "api-post-id": String,
     name: String,
