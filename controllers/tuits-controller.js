@@ -12,20 +12,17 @@ const createTuit = async (req, res) => {
     const userId = req.params.userId;
     const user = await usersDao.findUser(userId);
     const date = new Date();
-    console.log(user.username)
 
     if (newTuit["api-post-id"] === undefined) {
         newTuit.username = user.username;
         newTuit.name = user.name;
         newTuit.likes = 0;
-        newTuit.disliked = 0;
         newTuit.comments = 0;
-        newTuit.liked = false;
-        newTuit.disliked = false;
-        newTuit.verified = false;
+        newTuit.liked_users = [];
+        newTuit.bookmarked_users = [];
+        newTuit.commented_users = [];
         newTuit.time = "Just now";
         newTuit["avatar-image"] = user["avatar-image"];
-        newTuit.retuits = 0;
         newTuit["api-post-id"] = "";
         newTuit.date = {};
         newTuit.date.day = date.getDate();

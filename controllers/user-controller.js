@@ -29,7 +29,6 @@ const signup = async (req, res) => {
     const user = req.body
     const existingUser = await usersDao.findUserByEmail(user.email)
     if (existingUser) {
-        console.log("oh no!")
         res.sendStatus(403)
     } else {
         const actualUser = await usersDao.createUser(user)
@@ -96,7 +95,6 @@ const findLikedTuits = async (req, res) => {
     const userId = req.params.uid;
     const user = await usersDao.findUser(userId);
     const liked_tuits = user.liked_tuits;
-    console.log(user)
     const tuits = [];
     for (let i = 0; i < liked_tuits.length; i++) {
         const newTuit = await tuitsDao.findTuit(liked_tuits[i]);
