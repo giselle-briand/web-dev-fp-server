@@ -15,8 +15,14 @@ const findUserByCredentials = async (req, res) => {
     if(user) {
         res.send(user)
     } else {
+        console.log("User doesn't exist, sending 403")
         res.send(403)
     }
+}
+
+const findAllUsers = async (req, res) => {
+    const users = await usersDao.findAllUsers();
+    res.json(users);
 }
 
 const createUser = async (req, res) => {
@@ -144,6 +150,7 @@ export default (app) => {
     app.post('/api/login', login)
     app.post('/api/logout', logout)
     app.post('/api/profile', profile)
+    app.get('/api/users', findAllUsers)
     app.get('/api/users/:uid', findUser);
     app.get('/api/users/:uid/likes', findLikedTuits);
     app.get('/api/users/:uid/bookmarks', findBookmarks);
