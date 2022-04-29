@@ -15,8 +15,14 @@ const findUserByCredentials = async (req, res) => {
     if(user) {
         res.send(user)
     } else {
+        console.log("User doesn't exist, sending 403")
         res.send(403)
     }
+}
+
+const findAllUsers = async (req, res) => {
+    const users = await usersDao.findAllUsers();
+    res.json(users);
 }
 
 const createUser = async (req, res) => {
@@ -29,7 +35,6 @@ const signup = async (req, res) => {
     const user = req.body
     const existingUser = await usersDao.findUserByEmail(user.email)
     if (existingUser) {
-        console.log("oh no!")
         res.sendStatus(403)
     } else {
         const actualUser = await usersDao.createUser(user)
@@ -46,9 +51,16 @@ const deleteUser = async (req, res) => {
 const updateUser = async (req, res) => {
     const userId = req.params.uid;
     const updatedUser = req.body;
-    const status = await usersDao.updateUser(userId, updatedUser);
-    req.session['currentUser'] = updatedUser;
-    res.send(status);
+
+    const existingUser = await usersDao.findUserByEmail(updatedUser.email)
+    if (existingUser.id.toString() !== updatedUser._id) {
+        res.sendStatus(403)
+    } else {
+        const status = await usersDao.updateUser(userId, updatedUser);
+        req.session['currentUser'] = updatedUser;
+        res.send(status);
+    }
+
 }
 
 const updateOtherUser = async (req, res) => {
@@ -89,7 +101,6 @@ const findLikedTuits = async (req, res) => {
     const userId = req.params.uid;
     const user = await usersDao.findUser(userId);
     const liked_tuits = user.liked_tuits;
-    console.log(user)
     const tuits = [];
     for (let i = 0; i < liked_tuits.length; i++) {
         const newTuit = await tuitsDao.findTuit(liked_tuits[i]);
@@ -139,6 +150,7 @@ export default (app) => {
     app.post('/api/login', login)
     app.post('/api/logout', logout)
     app.post('/api/profile', profile)
+    app.get('/api/users', findAllUsers)
     app.get('/api/users/:uid', findUser);
     app.get('/api/users/:uid/likes', findLikedTuits);
     app.get('/api/users/:uid/bookmarks', findBookmarks);
