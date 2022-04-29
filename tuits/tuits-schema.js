@@ -4,7 +4,6 @@ const schema = mongoose.Schema({
     likes: Number,
     dislikes: Number,
     comments: Number,
-    retuits: Number,
     liked_users:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'}],
