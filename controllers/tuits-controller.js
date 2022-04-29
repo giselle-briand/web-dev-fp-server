@@ -7,6 +7,11 @@ const findAllTuits = async (req, res) => {
     res.json(tuits);
 }
 
+const findPopularTuits = async (req, res) => {
+    const tuits = await tuitsDao.findPopularTuits();
+    res.json(tuits);
+}
+
 const createTuit = async (req, res) => {
     const newTuit = req.body;
     const userId = req.params.userId;
@@ -54,6 +59,7 @@ const findCommentsByUserId = async (req, res) => {
 }
 
 export default (app) => {
+    app.get('/api/tuits/popular', findPopularTuits);
     app.post('/api/tuits/users/:userId', createTuit);
     app.get('/api/tuits', findAllTuits);
     app.get('/api/users/:userId/tuits', findCommentsByUserId);
