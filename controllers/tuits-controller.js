@@ -25,7 +25,7 @@ const createTuit = async (req, res) => {
         newTuit.verified = false;
         newTuit.time = "Just now";
         newTuit["avatar-image"] = user["avatar-image"];
-        newTuit.retuits = 0;
+        //newTuit.retuits = 0;
         newTuit["api-post-id"] = "";
         newTuit.date = {};
         newTuit.date.day = date.getDate();
@@ -34,6 +34,7 @@ const createTuit = async (req, res) => {
         newTuit.date.time = date.toISOString().split('T')[1].substring(0, 5);
     }
     const insertedTuit = await tuitsDao.createTuit(userId, newTuit);
+    console.log(insertedTuit)
     res.json(insertedTuit);
 }
 
