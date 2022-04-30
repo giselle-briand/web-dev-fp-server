@@ -16,10 +16,6 @@ const usersSchema = mongoose.Schema({
     bookmarks:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'TuitModel'}],
-    comments:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'TuitModel'
-    }],
     verified: {type: Boolean, default: false},
     email: {type: String, required: true},
     phoneNumber: {type: String, require:true},

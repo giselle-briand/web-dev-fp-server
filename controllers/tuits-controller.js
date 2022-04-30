@@ -7,6 +7,12 @@ const findAllTuits = async (req, res) => {
     res.json(tuits);
 }
 
+const findTuitById = async (req, res) => {
+    const tuitId = req.params.tid;
+    const tuit = await tuitsDao.findTuit(tuitId);
+    res.json(tuit)
+}
+
 const findPopularTuits = async (req, res) => {
     const tuits = await tuitsDao.findPopularTuits();
     res.json(tuits);
@@ -65,4 +71,5 @@ export default (app) => {
     app.get('/api/users/:userId/tuits', findCommentsByUserId);
     app.put('/api/tuits/:tid', updateTuit);
     app.delete('/api/tuits/:tid', deleteTuit);
+    app.get('/api/tuits/:tid', findTuitById);
 }
