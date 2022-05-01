@@ -37,13 +37,14 @@ const createTuit = async (req, res) => {
         newTuit["api-post-id"] = "";
         newTuit.date = {};
         newTuit.date.day = date.getDate();
-        newTuit.date.month = date.getUTCMonth() + 1;
+        newTuit.date.month = date.getUTCMonth();
         newTuit.date.year = date.getUTCFullYear();
         newTuit.date.time = date.toISOString().split('T')[1].substring(0, 5);
     }
     const insertedTuit = await tuitsDao.createTuit(userId, newTuit);
     res.json(insertedTuit);
 }
+
 
 const deleteTuit = async (req, res) => {
     const tuitdIdToDelete = req.params.tid;
