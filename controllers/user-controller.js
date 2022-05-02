@@ -31,6 +31,7 @@ const createUser = async (req, res) => {
     res.json(insertedUser);
 }
 
+
 const signup = async (req, res) => {
     const user = req.body
     const existingUser = await usersDao.findUserByEmail(user.email)
