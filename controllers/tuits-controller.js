@@ -15,13 +15,18 @@ const findTuitById = async (req, res) => {
 
 const findPopularTuits = async (req, res) => {
     const tuits = await tuitsDao.findPopularTuits();
-    res.json(tuits);
+
+    res.json(tuits.slice(0,10));
 }
 
 const createTuit = async (req, res) => {
+    console.log("inside the createTuit")
     const newTuit = req.body;
+    console.log(newTuit)
     const userId = req.params.userId;
+    console.log(userId)
     const user = await usersDao.findUser(userId);
+    console.log(user)
     const date = new Date();
 
     if (newTuit["api-post-id"] === undefined) {
